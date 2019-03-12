@@ -45,6 +45,8 @@ using namespace sensors;
 SensorFactoryPrivate::SensorFactoryPrivate()
 {
   this->systemPaths.AddPluginPaths(IGN_SENSORS_PLUGIN_PATH);
+  std::cerr << "IGN_SENSORS_PLUGIN_PATH: " <<
+      std::string(IGN_SENSORS_PLUGIN_PATH) << std::endl;
 }
 
 //////////////////////////////////////////////////
