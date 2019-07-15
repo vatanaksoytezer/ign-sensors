@@ -200,6 +200,10 @@ namespace ignition
       public: ignition::sensors::Sensor *Sensor(
                   ignition::sensors::SensorId _id);
 
+      /// \brief Get a list of sensors managed by the manager
+      /// \return list of sensor ids
+      public: std::vector<ignition::sensors::SensorId> Sensors() const;
+
       /// \brief Remove a sensor by ID
       /// \param[in] _sensorId ID of the sensor to remove
       /// \return True if the sensor exists and removed.

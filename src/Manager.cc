@@ -29,6 +29,7 @@
 
 #include "ignition/sensors/config.hh"
 #include "ignition/sensors/Events.hh"
+#include "ignition/sensors/RenderingSensor.hh"
 #include "ignition/sensors/SensorFactory.hh"
 
 using namespace ignition::sensors;
@@ -118,6 +119,15 @@ ignition::sensors::Sensor *Manager::Sensor(
 {
   auto iter = this->dataPtr->sensors.find(_id);
   return iter != this->dataPtr->sensors.end() ? iter->second.get() : nullptr;
+}
+
+//////////////////////////////////////////////////
+std::vector<ignition::sensors::SensorId> Manager::Sensors() const
+{
+  std::vector<ignition::sensors::SensorId> sensorIds;
+  for (auto &s : this->dataPtr->sensors)
+    sensorIds.push_back(s.first);
+  return sensorIds;
 }
 
 //////////////////////////////////////////////////

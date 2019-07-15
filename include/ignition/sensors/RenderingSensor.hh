@@ -20,6 +20,7 @@
 #include <memory>
 
 #include <ignition/rendering/Scene.hh>
+#include <ignition/rendering/Sensor.hh>
 
 #include "ignition/sensors/rendering/Export.hh"
 #include "ignition/sensors/Sensor.hh"
@@ -54,6 +55,24 @@ namespace ignition
 
       /// \brief Get the rendering scene.
       public: rendering::ScenePtr Scene() const;
+
+      /// \brief Render update. This performs the actual render operation.
+      /// It checks the input time to avoid duplicate render calls in the
+      /// same time step
+      /// \param[in] _now The current time
+      /// \param[in] _force True to force render update.
+      public: void Render(const common::Time &_now, bool _force = false);
+
+      /// \brief Get the number of rendering sensors
+      /// \return rendering sensor used for generating sensor data
+      public: unsigned int SensorCount() const;
+
+      /// \brief Get rendering sensor by index
+      /// \param[in] _index of sensor used for data generation
+      public: rendering::SensorPtr Sensor(unsigned int _idx = 0) const;
+
+      //// \brief Pointer to the rendering sensor
+      protected: std::vector<rendering::SensorPtr> sensors;
 
       /// \internal
       /// \brief Data pointer for private data

@@ -123,6 +123,7 @@ bool GpuLidarSensor::CreateLidar()
     ignerr << "Unable to create gpu laser sensor\n";
     return false;
   }
+  this->sensors.push_back(this->dataPtr->gpuRays);
 
   this->dataPtr->gpuRays->SetWorldPosition(this->Pose().Pos());
   this->dataPtr->gpuRays->SetWorldRotation(this->Pose().Rot());
@@ -174,7 +175,7 @@ bool GpuLidarSensor::Update(const ignition::common::Time &_now)
     this->laserBuffer = new float[len];
   }
 
-  this->dataPtr->gpuRays->Update();
+  this->Render(_now);
   this->dataPtr->gpuRays->Copy(this->laserBuffer);
 
   this->PublishLidarScan(_now);
