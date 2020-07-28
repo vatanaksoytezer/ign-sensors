@@ -250,6 +250,49 @@ TEST_F(AltimeterSensorTest, SensorReadings)
   EXPECT_FALSE(ignition::math::equal(vertVel, msgNoise.vertical_velocity()));
 }
 
+/////////////////////////////////////////////////
+TEST_F(AltimeterSensorTest, Topic)
+{
+  // Create SDF describing an altimeter sensor
+  const std::string name = "TestAltimeter";
+  const std::string topicNoise = "/ignition/sensors/test/altimeter_noise";
+  const double updateRate = 30;
+  const bool alwaysOn = 1;
+  const bool visualize = 1;
+  auto sensorPose = ignition::math::Pose3d();
+
+  // Factory
+  ignition::sensors::SensorFactory factory;
+  factory.AddPluginPaths(ignition::common::joinPaths(PROJECT_BUILD_PATH,
+      "lib"));
+
+  // Convert to valid topic
+  {
+    const std::string topic = "/topic with  spaces/@~characters//";
+    auto altimeterSDF = AltimeterToSDF(name, sensorPose,
+          updateRate, topic, alwaysOn, visualize);
+
+    auto sensor = factory.CreateSensor(altimeterSDF);
+    EXPECT_NE(nullptr, sensor);
+
+    auto altimeter =
+        dynamic_cast<ignition::sensors::AltimeterSensor *>(sensor.release());
+    ASSERT_NE(nullptr, altimeter);
+
+    EXPECT_EQ("/topic_with__spaces/characters", altimeter->Topic());
+  }
+
+  // Invalid topic
+  {
+    const std::string topic = "@@@";
+    auto altimeterSDF = AltimeterToSDF(name, sensorPose,
+          updateRate, topic, alwaysOn, visualize);
+
+    auto sensor = factory.CreateSensor(altimeterSDF);
+    ASSERT_EQ(nullptr, sensor);
+  }
+}
+
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
