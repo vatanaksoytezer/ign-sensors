@@ -94,8 +94,11 @@ bool SensorPrivate::PopulateFromSDF(const sdf::Sensor &_sdf)
 
   // \todo(nkoenig) how to use frame?
   this->name = _sdf.Name();
-  if (!this->SetTopic(_sdf.Topic()))
-    return false;
+  if (!_sdf.Topic().empty())
+  {
+    if (!this->SetTopic(_sdf.Topic()))
+      return false;
+  }
 
   // Try resolving the pose first, and only use the raw pose if that fails
   auto semPose = _sdf.SemanticPose();

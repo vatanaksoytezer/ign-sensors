@@ -194,6 +194,9 @@ bool ThermalCameraSensor::Load(const sdf::Sensor &_sdf)
   this->dataPtr->sdfSensor = _sdf;
 
   // Create the thermal image publisher
+  if (this->Topic().empty())
+    this->SetTopic("/thermal");
+
   this->dataPtr->thermalPub =
       this->dataPtr->node.Advertise<ignition::msgs::Image>(
           this->Topic());
