@@ -18,6 +18,9 @@ ign_configure_project(VERSION_SUFFIX pre1)
 #============================================================================
 # Set project-specific options
 #============================================================================
+
+set(OpenGL_GL_PREFERENCE GLVND)
+
 set (DRI_TESTS TRUE CACHE BOOL "True to enable DRI tests")
 
 option(ENABLE_PROFILER "Enable Ignition Profiler" FALSE)
